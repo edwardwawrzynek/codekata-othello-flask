@@ -9,14 +9,16 @@ app = Flask(__name__)
 
 # begin tournament
 tournament = Tournament()
-tournament_thread = Thread(target=tournament.update_players)
-tournament_thread.daemon = True
-tournament_thread.start()
+tournament.start()
 
 # pages
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/admin/")
+def admin(key=None):
+    return render_template("admin.html")
 
 # GET routes
 @app.route("/boards/<key>", methods=["GET"])
@@ -53,6 +55,11 @@ def set_name(key=None, newName=None):
 def move(key=None, x=None, y=None):
     err = tournament.put_move(key, int(y), int(x))
     return json.dumps({"error": err})
+
+@app.route("/restart/<key>", methods=["POST"])
+def restart(key=None):
+    if key == tournament.admin_key:
+        tournament.restart()
 
 
 if __name__ == "__main__":

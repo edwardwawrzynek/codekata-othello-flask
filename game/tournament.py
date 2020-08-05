@@ -2,6 +2,7 @@ import time
 import random
 import itertools
 import copy
+from threading import Thread
 
 from flask import json
 
@@ -43,6 +44,25 @@ class Tournament:
     
         self.update_interval = 0.5 # seconds
 
+        self.thread = None
+        self.running = False
+        self.stopped = False
+
+    def start(self):
+        self.thread = Thread(target=self.update_players)
+        self.thread.daemon = True
+        self.thread.start()
+
+    def restart(self):
+        self.running = False
+        print("Stopping tournament...")
+        while not self.stopped:
+            pass
+        print("Tournament stopped.")
+        print("Restarting tournament...")
+        self.__init__(self.rounds, self.observe_key, self.admin_key, self.player_keys)
+        self.start()
+
     def get_winner(self):
         # check if the game is over
         if len([r for r in self.game_results if r == 0]) > 0:
@@ -56,10 +76,11 @@ class Tournament:
         return self.player_games[player_key] == None
 
     def update_players(self):
-        print(f"Tournament started, updating every {self.update_interval} seconds")
         start = time.time()
         last_update = start
-        while True:
+        self.running = True
+        print(f"Tournament started, updating every {self.update_interval} seconds")
+        while self.running:
             t = time.time()
             if t - last_update < self.update_interval:
                 continue
@@ -94,6 +115,7 @@ class Tournament:
                     self.player_games[game[1]] = board
                     print(f"Starting game {game}")
                     break
+        self.stopped = True
 
     def set_name(self, player_key, new_name):
         err = "player does not exist"

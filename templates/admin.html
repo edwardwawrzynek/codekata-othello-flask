@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Codekata Othello</title>
+    </head>
+    <body>
+        <script>
+            function getInputKey() {
+                let field = document.getElementById("key")
+                return field.value
+            }
+
+            function restart() {
+                const xhr = new XMLHttpRequest()
+                const key = getInputKey()
+                xhr.open("POST", `/restart/${key}`)
+                xhr.send("")
+            }
+        </script>
+
+        <h1>Tournament Control</h1>
+        <label for="key">Admin Key: </label>
+        <input type="text" id="key" name="key">
+        <br>
+        
+        <button type="button" onclick="restart()">Restart Tournament</button>
+    </body>
+</html>
