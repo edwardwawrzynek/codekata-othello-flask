@@ -22,7 +22,7 @@ class Direction:
 directions = tuple([Direction(*p) for p in itertools.product([-1, 0, 1], [-1, 0, 1])])
 
 class Board:
-    center_squares = ((3, 3), (4, 3), (4, 4), (3, 4))
+    center_squares = ((4, 3), (3, 3), (3, 4), (4, 4))
     def __init__(self, board=None):
         if board == None:
             self.contents = [[EMPTY for y in range(8)] for x in range(8)]
