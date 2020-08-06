@@ -20,6 +20,10 @@ def index():
 def admin(key=None):
     return render_template("admin.html")
 
+@app.route("/play/")
+def play():
+    return render_template("play.html")
+
 # GET routes
 @app.route("/boards/<key>", methods=["GET"])
 def get_boards(key=None):
