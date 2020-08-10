@@ -74,7 +74,7 @@ function drawBoard(board, x, y, w, h) {
 }
 
 function drawBoardSquare(board, xOff, yOff, size) {
-  render.fillStyle = "#819b7d";
+  render.fillStyle = "white";
   render.fillRect(xOff, yOff, size, size);
   for(let x = 0; x < 8; x++) {
     for(let y = 0; y < 8; y++) {
@@ -83,14 +83,14 @@ function drawBoardSquare(board, xOff, yOff, size) {
       if(board[x][y] == 0) continue;
       let color;
       if(reverse_colors) {
-        color = board[x][y] == 1 ? 'black' : 'white';
+        color = board[x][y] == 1 ? '#FF2400' : '#87CEEB';
       } else {
-        color = board[x][y] == 1 ? 'white' : 'black';
+        color = board[x][y] == 1 ? '#87CEEB' : '#FF2400';
       }
       render.fillStyle = color;
 
       render.beginPath();
-      render.arc(xOff + (x + 0.5)*(size/8), yOff + (y + 0.5)*(size/8), (size/8) * 0.4, 0, 2.0 * Math.PI);
+      render.arc(xOff + (x + 0.5)*(size/8), yOff + (y + 0.5)*(size/8), (size/8) * 0.3, 0, 2.0 * Math.PI);
       render.fill();
     }
   }
@@ -127,7 +127,7 @@ function drawMoveNeeded(needed, x, y, w, h) {
   render.textAlign = "center";
   render.fillStyle = "black";
 
-  render.fillText(`You are playing ${reverse_colors ? 'black' : 'white'}.`, x + w/2, y + 25, w - 10);
+  render.fillText(`You are playing ${reverse_colors ? 'red' : 'blue'}.`, x + w/2, y + 25, w - 10);
   render.fillText("When a move is required, click where you would like to place a disk.", x + w/2, y + 50, w - 10);
   render.fillText("Move required: " + needed.needed, x + w/2, y + 75, w - 10);
 }
