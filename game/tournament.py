@@ -81,13 +81,12 @@ class Tournament:
         self.running = True
         print(f"Tournament started, updating every {self.update_interval} seconds")
         while self.running:
-            t = time.time()
-            if t - last_update < self.update_interval:
-                continue
-            last_update = t
+            time.sleep(self.update_interval)
 
             # handle finished boards
             for b in self.boards:
+                b.ready_run_countdown()
+
                 if b.tied:
                     self.player_records[b.player1_key].ties += 1
                     self.player_records[b.player2_key].ties += 1
@@ -101,7 +100,7 @@ class Tournament:
                 self.player_games[b.player1_key] = None
                 self.player_games[b.player2_key] = None
                 print("Readying board")
-                b.ready()
+                b.ready_start_countdown()
 
             # handle available boards
             available_boards = [b for b in self.boards if b.is_open]
