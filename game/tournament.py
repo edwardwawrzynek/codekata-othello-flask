@@ -140,7 +140,8 @@ class Tournament:
         err = None
         boards = []
         if key in self.player_keys:
-            boards.append(self.player_games[key].prepared_for(key).contents)
+            if self.player_games[key] != None:
+                boards.append(self.player_games[key].prepared_for(key).contents)
         elif key == self.observe_key:
             board_objs = self.boards.copy()
             for obj in board_objs:
