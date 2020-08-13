@@ -1,6 +1,7 @@
 from enum import Enum
 import itertools
 import copy
+import time
 
 from flask import json
 
@@ -39,6 +40,11 @@ class Board:
         self.tied = False
 
         self.is_open = True
+        # time at which countdown to setting is_open begins
+        self.open_countdown_start = 0.0
+
+        # time to run countdown till setting is_open
+        self.open_countdown_time = 5.0 #seconds
     
     def __str__(self):
         string = ""
@@ -52,12 +58,21 @@ class Board:
     def game(self):
         return (self.player1_key, self.player2_key)
 
-    def ready(self):
-        self.is_open = True
+    def ready_start_countdown(self):
         self.winner = None
         self.loser = None
         self.tied = False
         self.active_turn = PLAYER1
+        self.open_countdown_start = time.time()
+        self.is_open = False
+
+    def ready_run_countdown(self):
+        if self.open_countdown_start == 0.0:
+            return
+
+        if time.time() - self.open_countdown_start > self.open_countdown_time:
+            self.is_open = True
+            self.open_countdown_start = 0.0
 
     def load_game(self, game):
         self.contents = [[EMPTY for y in range(8)] for x in range(8)]
